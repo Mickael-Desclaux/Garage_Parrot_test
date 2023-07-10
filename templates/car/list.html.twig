@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos voitures d'occasion
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row mt-2 offset-lg-1 offset-md-1">
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item">
+                        <a href="/">Accueil</a>
+                    </li>
+                    <li class="breadcrumb-item active" aria-current="page">Nos voitures</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="row d-flex justify-content-between">
+            <h1 class="mt-1 col-lg-11 offset-md-1 col-md-5" id="total-car">
+                {{ total_cars }}
+                Annonces Auto
+            </h1>
+            <div class="mt-4 col-lg-3 col-md-3">
+                <button class="navbar-toggler filter-toggle-btn" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#offcanvasScrolling" aria-controls="offcanvasScrolling"
+                        aria-label="Toggle filter">
+                    <span class="btn btn-danger">Filtrer les résultats</span>
+                </button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-2 offset-lg-1 me-5 d-flex justify-content-center">
+                <div class="offcanvas-lg offcanvas-end filter-offcanvas" id="offcanvasScrolling" data-bs-scroll="true"
+                     data-bs-backdrop="false" aria-labelledby="offcanvasScrollingLabel">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Filtrer</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+                    </div>
+                    {{ form_start(filter_form, { 'attr': {'id': 'car_filter', 'class': 'mt-2', 'action': path('filtered_cars')}}) }}
+                    <div class="offcanvas-body">
+                        <div id="form-display">
+                            <div class="form-group">
+                                {{ form_label(filter_form.price, 'Prix') }}
+                                {{ form_widget(filter_form.price, { 'attr': {'class': 'form-control mt-1'} }) }}
+                            </div>
+
+                            <div class="form-group mt-3">
+                                {{ form_label(filter_form.brand, 'Marque') }}
+                                {{ form_widget(filter_form.brand, { 'attr': {'class': 'form-choice mt-1'} }) }}
+                            </div>
+
+                            <div class="form-group mt-3">
+                                {{ form_label(filter_form.year, 'Année') }}
+                                {{ form_widget(filter_form.year, { 'attr': {'class': 'form-control mt-1'} }) }}
+                            </div>
+
+                            <div class="form-group mt-3">
+                                {{ form_label(filter_form.mileage, 'Kilométrage') }}
+                                {{ form_widget(filter_form.mileage, { 'attr': {'class': 'form-control mt-1'} }) }}
+                            </div>
+
+                            <div class="form-group mt-3">
+                                {{ form_label(filter_form.horsepower, 'Puissance') }}
+                                {{ form_widget(filter_form.horsepower, { 'attr': {'class': 'form-control mt-1'} }) }}
+                            </div>
+
+                            <div class="form-group mt-3">
+                                {{ form_label(filter_form.energy, 'Énergie') }}
+                                {{ form_widget(filter_form.energy, { 'attr': {'class': 'form-choice mt-1'} }) }}
+                            </div>
+
+                            <div class="form-group mt-3">
+                                {{ form_label(filter_form.gearbox, 'Boîte de vitesse') }}
+                                {{ form_widget(filter_form.gearbox, { 'attr': {'class': 'form-choice mt-1'} }) }}
+                            </div>
+
+                            <div class="form-group mt-3">
+                                {{ form_label(filter_form.doors, 'Nombre de portes') }}
+                                {{ form_widget(filter_form.doors, { 'attr': {'class': 'form-choice mt-1'} }) }}
+                            </div>
+                            <div class="mt-3">{{ form_widget(filter_form.reset, { 'attr': {'class': 'btn btn-danger filter-btn mt-1'} }) }}</div>
+                            <div class="mt-3">{{ form_widget(filter_form.submit, { 'attr': {'class': 'btn btn-danger filter-btn mt-1'} }) }}</div>
+                        </div>
+                    </div>
+                    {{ form_end(filter_form) }}
+                </div>
+            </div>
+
+            <div class="col-lg-8">
+                <div class="car-list d-flex justify-content-around flex-wrap" id="car-list">
+                    {% for car in cars %}
+                        <div class="card mt-4 ms-1 me-1 mb-4 car-card">
+                            {% if car.carImages|length > 0 %}
+                                {% set image = car.carImages|first %}
+                                <img src="{{ asset('images/cars/' ~ image.name) }}"
+                                     alt="{{ car.brand }} {{ car.model }}" class="car-card-img">
+                            {% endif %}
+
+                            <div class="card-body">
+
+                                {% if car.brand %}
+                                    <h2 class="card-title text-center">{{ car.brand ~ " " ~ car.model }}</h2>
+                                {% endif %}
+                                <p class="card-text text-center">{{ car.year ~ " - " ~ car.mileage|number_format(0, ',', ' ') ~ " " ~ "km"}}</p>
+                                <p class="card-text text-center car-price">{{ car.price|number_format(0, ',', ' ') }} €</p>
+                                <div class="d-flex justify-content-center">
+                                    <a href="{{ path('voiture_detail', {id: car.id}) }}"
+                                       class="btn btn-danger stretched-link d-flex justify-content-center"
+                                       id="car-detail-btn">Détails</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <button onclick="topFunction()" id="myBtn" title="Go to top">Retour en haut de page</button>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.7.0.js"
+            integrity="sha256-JlqSTELeR4TLqP0OG9dxM7yDPqX1ox/HfgiSLBj8+kM=" crossorigin="anonymous"></script>
+    <script src="{{ asset('js/form.js') }}"></script>
+    <script src="{{ asset('js/offcanvas.js') }}"></script>
+    <script src="{{ asset('js/topButton.js') }}"></script>
+{% endblock %}
+

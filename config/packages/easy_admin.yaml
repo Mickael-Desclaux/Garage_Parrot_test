@@ -1,0 +1,20 @@
+easy_admin:
+    entities:
+        HomeContent:
+            class: App\Entity\HomeContent
+            role: ROLE_ADMIN
+        HomeServices:
+            class: App\Entity\HomeServices
+            role: ROLE_ADMIN
+        OpeningHours:
+            class: App\Entity\OpeningHours
+            role: ROLE_ADMIN
+        User:
+            class: App\Entity\User
+            role: ROLE_ADMIN
+        Car:
+            class: App\Entity\Car
+        Review:
+            class: App\Entity\Review
+        Contact:
+            class: App\Entity\Contact

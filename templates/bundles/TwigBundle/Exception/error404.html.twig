@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div style="height: 53vh;" class="mb-5 mt-4 ms-5">
+        <h1>Page non trouvée</h1>
+
+        <p class="mt-5">
+            La page que vous cherchez semble ne pas exister. Vous pourriez vouloir vérifier l'URL ou <a
+                    href="{{ path('home') }}">revenir à la page d'accueil.</a>
+        </p>
+    </div>
+{% endblock %}

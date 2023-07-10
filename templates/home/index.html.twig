@@ -1,0 +1,98 @@
+{% extends 'base.html.twig' %}
+{% block extra_stylesheets %}
+    <header>
+        <link rel="stylesheet" href="{{ asset('css/star-rating.css') }}">
+    </header>
+{% endblock %}
+{% block body %}
+
+    <div class="container-fluid">
+        <div class="row mt-5">
+            <div class="col-lg-6 offset-lg-3 justify-content-center text-center">
+                {% for HomeContent in content %}
+                    <section class="content">
+                        {{ HomeContent.content|raw }}
+                        {% if HomeContent.image %}
+                            <img src="{{ '/images/home/' ~ HomeContent.image }}" alt="HomeContent.image">
+                        {% endif %}
+
+
+                    </section>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="row mt-4">
+            <div class="col-lg-8 offset-lg-2 mt-5">
+                <section>
+                    <h2 class="mb-4">Nos Prestations</h2>
+                    <div class="d-flex justify-content-center flex-wrap text-center">
+                        {% for home_services in services %}
+                            <div class="card me-2 mb-5 services-card" style="max-width: 15em;">
+                                {% if home_services.image %}
+                                    <img src="{{ asset('images/home/services/' ~ home_services.image) }}"
+                                         alt="{{ home_services.image }}" class="services-card-img">
+                                {% endif %}
+                                <div class="card-body">
+                                    <h3>{{ home_services.title }}</h3>
+                                    <p class="card-text">{{ home_services.content }}</p>
+                                </div>
+                                <div class="card-footer">
+                                    <p>À partir de
+                                        <span class="services-price">{{ home_services.price }}€</span></p>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </section>
+            </div>
+        </div>
+        <section>
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-8 offset-lg-2">
+                        <h2 class="text-center mb-5 mt-5">Votre avis nous intéresse !</h2>
+                        <p class="text-center">La satisfaction de nos clients est notre priorité numéro une, n’hésitez
+                            pas à nous laisser
+                            <a href="/vos_avis">votre avis</a>
+                            suite à votre passage !</p>
+                        <div class="d-flex justify-content-center text-center mt-2">
+                            <div id="carousel" class="carousel slide" style="max-width: 80em;" data-bs-ride="carousel">
+                                <div class="carousel-inner">
+
+                                    {% for review in reviews %}
+                                        <div class="carousel-item {% if loop.first %}active{% endif %} text-center">
+                                            <div class="carousel-content p-4">
+                                                <h5>{{ review.name }}</h5>
+                                                {% for i in 1..5 %}
+                                                    {% if i <= review.note %}
+                                                        <span class="star-rating__star" id="star">&#9733;</span>
+                                                        <!-- Etoile remplie -->
+                                                    {% else %}
+                                                        <span class="star-rating__star" id="star">&#9734;</span>
+                                                        <!-- Etoile vide -->
+                                                    {% endif %}
+                                                {% endfor %}
+                                                <p>{{ review.comment }}</p>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+
+                                </div>
+                                <button class="carousel-control-prev" type="button" data-bs-target="#carousel"
+                                        data-bs-slide="prev">
+                                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                </button>
+                                <button class="carousel-control-next" type="button" data-bs-target="#carousel"
+                                        data-bs-slide="next">
+                                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}
+

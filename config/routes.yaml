@@ -1,0 +1,10 @@
+controllers:
+    resource:
+        path: ../src/Controller/
+        namespace: App\Controller
+    type: attribute
+
+filtered_cars:
+    path: /filtered_cars
+    controller: App\Controller\CarController::filteredCars
+    methods: [POST]
